@@ -2,7 +2,7 @@ from replit import db
 import dataset
 from dotenv import load_dotenv
 import os
-from fastapi import UploadFile, File, Request
+from fastapi import UploadFile, File, Request, Body
 
 load_dotenv()
 db = {}
@@ -43,10 +43,15 @@ def init_app(app, access_point="/api", encoding='utf-8'):
       return list(table.all())
 
   @app.post(access_point + "/{name}", tags=[access_point])
-  async def insert_itens(name: str, request: Request):
+  async def insert_itens(name: str, request: Request, payload: dict = Body(...)):
       table = repository[name]
       try:
-          table.insert(dict(await request.json()))
+            value = await request.json()
+            if value[0]["id"]:
+                items = list(value)
+            else:
+                items = [value]
+            table.insert_many([ob for ob in items])
       except:
           ...
       return list(table.all())
