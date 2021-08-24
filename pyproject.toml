@@ -2,7 +2,7 @@
 name = "repl_python3_game-api"
 version = "0.1.0"
 description = ""
-authors = ["edson-dev <<>>"]
+authors = ["edson-dev"]
 
 [tool.poetry.dependencies]
 python = "^3.8"
@@ -11,6 +11,7 @@ uvicorn = "*"
 replit = "^3.2.4"
 dataset = "*"
 psycopg2-binary = "*"
+dotenv = "*"
 
 [tool.poetry.dev-dependencies]
 
