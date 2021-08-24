@@ -8,6 +8,10 @@ authors = ["edson-dev <<>>"]
 python = "^3.8"
 fastapi = "^0.68.1"
 uvicorn = "*"
+replit = "^3.2.4"
+dataset = "*"
+psycopg2-binary = "*"
+
 [tool.poetry.dev-dependencies]
 
 [build-system]
