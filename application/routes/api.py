@@ -14,7 +14,7 @@ repository = dataset.connect(os.getenv("POSTGRESQL"))
 def init_app(app, access_point="/api", encoding='utf-8'):
   @app.get(access_point + "/", tags=[access_point])
   async def get_table_itens():
-        return db
+        return repository.tables
 
   @app.get(access_point + "/{name}/create_table", tags=[access_point])
   async def create_table(name: str):
