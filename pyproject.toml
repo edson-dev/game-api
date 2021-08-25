@@ -11,7 +11,7 @@ uvicorn = "*"
 replit = "^3.2.4"
 dataset = "*"
 psycopg2-binary = "*"
-dotenv = "*"
+python_dotenv = "*"
 
 [tool.poetry.dev-dependencies]
 
