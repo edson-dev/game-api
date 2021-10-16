@@ -16,9 +16,9 @@ postgres_database = dataset.connect(os.getenv("POSTGRESQL"))
 RepositorySQL(app, postgres_database, "/api-psql")
 RepositoryNOSQL(app, "/api-nosql")
 
-@app.get("/", tags=["/view"])
+@app.get("/test", tags=["/test"])
 def read_root():
-    return "test"
+    return {"response": "Hello World"}
 
 
 if __name__ == "__main__":

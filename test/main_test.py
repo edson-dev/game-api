@@ -12,6 +12,7 @@ nest_asyncio.apply()
 client = TestClient(app)
 
 
-async def test_read_main():
-    response = client.get("/")
+async def test_read_test():
+    response = client.get("/test")
     assert response.status_code == 200
+    assert response.json() == {"response": "Hello World"}

@@ -4,11 +4,11 @@ services:
         build: ../application
         container_name: "fastapi"
         #todo fix 2way bind folder
-        volumes:
-            - type: bind
-              source: ./application
-              target: /application
-              read_only: true
+        #volumes:
+        #    - type: bind
+        #      source: ./application
+        #      target: /application
+        #      read_only: true
         ports:
             - 8080:8080
 
