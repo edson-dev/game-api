@@ -1,11 +1,19 @@
 from fastapi import FastAPI
 import uvicorn
-from routes import api
+
+from application.routes.repository.repository_nosql import RepositoryNOSQL
+from application.routes.repository.repository_sql import RepositorySQL
+from routes.repository import api
+
+import dataset
+import os
 
 app = FastAPI()
 
-api.init_app(app,"/api")
-
+#api.init_app(app, "/api")
+postgres_database = dataset.connect(os.getenv("POSTGRESQL"))
+RepositorySQL(app, postgres_database, "/api")
+RepositoryNOSQL(app)
 
 @app.get("/", tags=["/view"])
 def read_root():
