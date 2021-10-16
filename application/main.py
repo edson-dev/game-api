@@ -1,3 +1,4 @@
+#python -m poetry export -f requirements.txt --output /application/requirements.txt
 from fastapi import FastAPI
 import uvicorn
 
@@ -12,8 +13,8 @@ app = FastAPI()
 
 #api.init_app(app, "/api")
 postgres_database = dataset.connect(os.getenv("POSTGRESQL"))
-RepositorySQL(app, postgres_database, "/api")
-RepositoryNOSQL(app)
+RepositorySQL(app, postgres_database, "/api-psql")
+RepositoryNOSQL(app, "/api-nosql")
 
 @app.get("/", tags=["/view"])
 def read_root():
