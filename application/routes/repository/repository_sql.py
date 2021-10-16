@@ -1,6 +1,6 @@
 from fastapi import HTTPException
 
-from application.interfaces.repository_interface import RepositoryInterface
+from interfaces.repository_interface import RepositoryInterface
 
 
 class RepositorySQL(RepositoryInterface):
