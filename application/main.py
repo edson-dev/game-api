@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 import uvicorn
 
-from application.routes.repository.repository_nosql import RepositoryNOSQL
-from application.routes.repository.repository_sql import RepositorySQL
+from routes.repository.repository_nosql import RepositoryNOSQL
+from routes.repository.repository_sql import RepositorySQL
 from routes.repository import api
 
 import dataset
