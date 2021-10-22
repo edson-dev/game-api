@@ -1,4 +1,5 @@
 #python -m poetry export -f requirements.txt --output /application/requirements.txt
+import pymongo as pymongo
 from fastapi import FastAPI
 import uvicorn
 
@@ -12,13 +13,17 @@ import os
 app = FastAPI()
 
 #api.init_app(app, "/api")
-postgres_database = dataset.connect(os.getenv("POSTGRESQL"))
-RepositorySQL(app, postgres_database, "/api-psql")
-RepositoryNOSQL(app, "/api-nosql")
+database_postgres = dataset.connect(os.getenv("POSTGRESQL"))
+database_mongodb = pymongo.MongoClient(os.getenv("MONGODB_URL")).database
 
+RepositorySQL(app, database_postgres, "/api-psql")
+RepositoryNOSQL(app, database_mongodb, "/api-nosql")
+
+
+db = database_mongodb
 @app.get("/test", tags=["/test"])
 def read_root():
-    return {"response": "Hello World"}
+    return str(db)
 
 
 if __name__ == "__main__":

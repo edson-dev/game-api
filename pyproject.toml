@@ -12,6 +12,7 @@ replit = "^3.2.4"
 dataset = "*"
 psycopg2-binary = "*"
 python_dotenv = "*"
+pymongo = "*"
 
 [tool.poetry.dev-dependencies]
 
