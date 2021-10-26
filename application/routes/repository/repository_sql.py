@@ -1,3 +1,4 @@
+from dataset import Database
 from fastapi import HTTPException
 
 from interfaces.repository_interface import RepositoryInterface
@@ -5,13 +6,16 @@ from fastapi import UploadFile, File, Request, Body
 
 
 class RepositorySQL(RepositoryInterface):
+    def __init__(self, app, repository: Database, access_point="/repository"):
+        self.init_app(app, repository, access_point)
+
     def init_app(self, app, repository, access_point="/repository"):
         self.create(app, repository, access_point)
         self.read(app, repository, access_point)
         self.update(app, repository, access_point)
         self.delete(app, repository, access_point)
 
-    def create(self, app, repository, access_point="/repository"):
+    def create(self, app, repository, access_point):
         @app.post(access_point + "/{database_name}", tags=[access_point])
         async def create(database_name: str, request: Request, payload: dict = Body(...)):
             table = repository[database_name]
@@ -49,8 +53,8 @@ class RepositorySQL(RepositoryInterface):
             return list(table.all())
 
     def delete(self, app, repository, access_point):
-        @app.delete(access_point + "/{database_name}", tags=[access_point])
-        async def delete(database_name: str, request: Request):
+        @app.delete(access_point + "/{database_name}/{item_code}", tags=[access_point])
+        async def delete(database_name: str, request: Request, item_code: int):
             table = repository[database_name]
             clause = dict(await request.json())
             table.delete(id=clause['id'])
