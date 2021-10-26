@@ -2,6 +2,7 @@ import json
 from typing import Optional
 import itertools
 import numbers
+from distutils.util import strtobool
 from bson import ObjectId
 from fastapi import HTTPException, Query, Request
 from pymongo.database import Database
@@ -33,10 +34,13 @@ class RepositoryNOSQL(RepositoryInterface):
                 if key not in ["connection","accept-encoding","accept","user-agent","host","content-length","content-type","postman-token"]:
                     if type(i[1].decode()) == dict:
                         value = json.loads(i[1].decode())
-                    elif isinstance(float(i[1].decode()), numbers.Number):
-                        value = int(i[1].decode())
+                    elif i[1].decode() == "True" or i[1].decode() == "False":
+                        value = True if i[1].decode() == "True" else False
                     else:
-                        value = i[1].decode()
+                        try:
+                            value = float(i[1].decode())
+                        except:
+                            value = i[1].decode()
                     query[key] = value
             result = list(table.find(query))
             return json.dumps(result[skip:skip+limit], default=str)
