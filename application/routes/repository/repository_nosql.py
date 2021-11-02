@@ -1,4 +1,5 @@
 import json
+from bson import json_util
 from typing import Optional
 import itertools
 import numbers
@@ -6,6 +7,7 @@ from distutils.util import strtobool
 from bson import ObjectId
 from fastapi import HTTPException, Query, Request
 from pymongo.database import Database
+
 
 from interfaces.repository_interface import RepositoryInterface
 
@@ -20,6 +22,7 @@ class RepositoryNOSQL(RepositoryInterface):
         self.update(app, repository, access_point)
         self.delete(app, repository, access_point)
 
+
     def create(self, app, repository, access_point):
         pass
 
@@ -31,25 +34,26 @@ class RepositoryNOSQL(RepositoryInterface):
             query = {}
             for i in list_params:
                 key = i[0].decode()
-                if key not in ["connection","accept-encoding","accept","user-agent","host","content-length","content-type","postman-token"]:
-                    if type(i[1].decode()) == dict:
-                        value = json.loads(i[1].decode())
-                    elif i[1].decode() == "True" or i[1].decode() == "False":
+                if key not in ["connection", "accept-encoding",
+                               "accept", "user-agent", "host",
+                               "content-length", "content-type",
+                               "postman-token"]:
+                    if i[1].decode() == "True" or i[1].decode() == "False":
                         value = True if i[1].decode() == "True" else False
                     else:
                         try:
-                            value = float(i[1].decode())
+                            value = json.loads(i[1].decode())
                         except:
                             value = i[1].decode()
                     query[key] = value
             result = list(table.find(query))
-            return json.dumps(result[skip:skip+limit], default=str)
+            return json.loads(json_util.dumps(result[skip:skip+limit]))
 
         @app.get(access_point + "/{database_name}/{item_code}", tags=[access_point])
         async def read_one(database_name: str, item_code: str):
             table = repository[database_name]
             result = list(table.find_one({"_id": ObjectId(item_code)}))
-            if len(result) > 0:
+            if len(result) == 1:
                 return json.dumps(result, default=str)
             else:
                 raise HTTPException(status_code=404, detail="Item not found")

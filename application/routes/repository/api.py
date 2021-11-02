@@ -6,7 +6,7 @@ from fastapi import UploadFile, File, Request, Body
 
 load_dotenv()
 db = {}
-db['edson'] = {"test": "success"}
+db['edson'] = {"application_test": "success"}
 
 repository = dataset.connect(os.getenv("POSTGRESQL"))
 

@@ -25,7 +25,7 @@ RepositoryNOSQL(app, database_mongodb, "/api-nosql")
 db = database_mongodb
 @app.get("/test", tags=["/test"])
 def read_root():
-    return str(db)
+    return {"response": "Hello World"}
 
 
 if __name__ == "__main__":

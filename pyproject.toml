@@ -13,6 +13,8 @@ dataset = "*"
 psycopg2-binary = "*"
 python_dotenv = "*"
 pymongo = "*"
+httpx = "*"
+mongoengine = "*"
 
 [tool.poetry.dev-dependencies]
 
