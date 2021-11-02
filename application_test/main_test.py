@@ -1,6 +1,6 @@
 #python -m pytest -W ignore::DeprecationWarning
 
-from base_test import *
+from .base_test import *
 
 client = TestClient(app)
 
