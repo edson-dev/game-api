@@ -17,7 +17,7 @@ class RepositorySQL(RepositoryInterface):
 
     def create(self, app, repository: Database, access_point):
         @app.post(access_point + "/{database_name}", tags=[access_point])
-        async def create(database_name: str, request: Request, payload: dict = Body(...)):
+        async def create(database_name: str, request: Request):
             table = repository[database_name]
             items = await request.json()
             if isinstance(items, list):
@@ -46,13 +46,12 @@ class RepositorySQL(RepositoryInterface):
         @app.put(access_point + "/{database_name}", tags=[access_point])
         async def upsert(database_name: str, request: Request):
             table = repository[database_name]
-            table.update(dict(await request.json()), ['id'])
+            table.upsert(dict(await request.json()), ['id'])
             return list(table.all())
 
     def delete(self, app, repository, access_point):
         @app.delete(access_point + "/{database_name}/{item_code}", tags=[access_point])
         async def delete(database_name: str, request: Request, item_code: int):
             table = repository[database_name]
-            clause = dict(await request.json())
-            table.delete(id=clause['id'])
+            table.delete(id=item_code)
             return list(table.all())
