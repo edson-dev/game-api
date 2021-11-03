@@ -13,6 +13,7 @@ from interfaces.repository_interface import RepositoryInterface
 
 
 class RepositoryNOSQL(RepositoryInterface):
+
     def __init__(self, app, repository: Database, access_point="/repository"):
         self.init_app(app, repository, access_point)
 
@@ -23,31 +24,24 @@ class RepositoryNOSQL(RepositoryInterface):
         self.delete(app, repository, access_point)
 
 
-    def create(self, app, repository, access_point):
-        pass
+    def create(self, app, repository: Database, access_point):
+        @app.post(access_point + "/{database_name}", tags=[access_point])
+        async def create(database_name: str, request: Request):
+            table = repository[database_name]
+            items = await request.json()
+            table.insert(items)
+            return {
+                "success": True,
+                "data": table.find({})
+            }
 
     def read(self, app, repository, access_point):
         @app.get(access_point + "/{database_name}", tags=[access_point])
         async def read_all(database_name: str, request: Request, skip: Optional[int] = 0, limit: Optional[int] = 100):
             table = repository[database_name]
-            list_params = request.headers.raw
-            query = {}
-            for i in list_params:
-                key = i[0].decode()
-                if key not in ["connection", "accept-encoding",
-                               "accept", "user-agent", "host",
-                               "content-length", "content-type",
-                               "postman-token"]:
-                    if i[1].decode() == "True" or i[1].decode() == "False":
-                        value = True if i[1].decode() == "True" else False
-                    else:
-                        try:
-                            value = json.loads(i[1].decode())
-                        except:
-                            value = i[1].decode()
-                    query[key] = value
-            result = list(table.find(query))
+            result = list(table.find(await self.query_header(request)))
             return json.loads(json_util.dumps(result[skip:skip+limit]))
+
 
         @app.get(access_point + "/{database_name}/{item_code}", tags=[access_point])
         async def read_one(database_name: str, item_code: str):

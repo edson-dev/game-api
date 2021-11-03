@@ -1,0 +1,65 @@
+{
+	"info": {
+		"_postman_id": "4d82ddad-bd24-43e5-957f-865e4b672256",
+		"name": "game-api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "create one",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"status\":\"done\",\r\n    \"name\":\"Edson\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api_psql/test",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api_psql",
+						"test"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create many",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[{\r\n    \"status\":\"done\",\r\n    \"name\":\"Edson\"\r\n}]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api_psql/test",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api_psql",
+						"test"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -17,9 +17,12 @@ app = FastAPI()
 #api.init_app(app, "/api")
 database_postgres = dataset.connect(os.getenv("POSTGRESQL"))
 database_mongodb = mongoengine.connect(host=os.getenv("MONGODB_URL")).database
-
-RepositorySQL(app, database_postgres, "/api-psql")
-RepositoryNOSQL(app, database_mongodb, "/api-nosql")
+endpoints = {
+    "api_psql": "api-psql",
+    "api_nosql": "api-nosql"
+}
+RepositorySQL(app, database_postgres, f"/{endpoints['api_psql']}")
+RepositoryNOSQL(app, database_mongodb, f"/{endpoints['api_nosql']}")
 
 
 db = database_mongodb
