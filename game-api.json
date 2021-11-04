@@ -6,60 +6,409 @@
 	},
 	"item": [
 		{
-			"name": "create one",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"status\":\"done\",\r\n    \"name\":\"Edson\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+			"name": "psql",
+			"item": [
+				{
+					"name": "read",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "query",
+								"value": "name",
+								"type": "text"
+							},
+							{
+								"key": "name",
+								"value": "test",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"status\":\"done\",\r\n    \"name\":\"Edson\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api-psql/test",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api-psql",
+								"test"
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "localhost:8080/api_psql/test",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api_psql",
-						"test"
-					]
+				{
+					"name": "update",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "query",
+								"type": "text",
+								"value": "id"
+							},
+							{
+								"key": "name",
+								"type": "text",
+								"value": "test",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"status\":\"done112312\",\r\n    \"name\":\"test112312\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api-psql/test",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api-psql",
+								"test"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create one",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"status\":\"done\",\r\n    \"name\":\"Edson\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api-psql/test",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api-psql",
+								"test"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create many",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[{\r\n        \"id\": 1,\r\n        \"name\": \"test\",\r\n        \"status\": \"done\"\r\n    },\r\n    {\r\n        \"id\": 2,\r\n        \"name\": \"test\",\r\n        \"status\": \"done\"\r\n    }\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api-psql/test",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api-psql",
+								"test"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "query",
+								"type": "text",
+								"value": "name"
+							},
+							{
+								"key": "name",
+								"type": "text",
+								"value": "test"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\" : 1,\r\n    \"status\":\"done\",\r\n    \"name\":\"test\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api-psql/test",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api-psql",
+								"test"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete all",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "query",
+								"type": "text",
+								"value": "name"
+							},
+							{
+								"key": "name",
+								"type": "text",
+								"value": "test"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\" : 1,\r\n    \"status\":\"done\",\r\n    \"name\":\"test\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api-psql/test/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api-psql",
+								"test",
+								"1"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		},
 		{
-			"name": "create many",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "[{\r\n    \"status\":\"done\",\r\n    \"name\":\"Edson\"\r\n}]",
-					"options": {
-						"raw": {
-							"language": "json"
+			"name": "nosql",
+			"item": [
+				{
+					"name": "create one",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"status\":\"done\",\r\n    \"name\":\"Edson\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api-psql/test",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api-psql",
+								"test"
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "localhost:8080/api_psql/test",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api_psql",
-						"test"
-					]
+				{
+					"name": "read",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "query",
+								"value": "name",
+								"type": "text"
+							},
+							{
+								"key": "name",
+								"value": "test",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"status\":\"done\",\r\n    \"name\":\"Edson\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api-psql/test",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api-psql",
+								"test"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "query",
+								"type": "text",
+								"value": "name"
+							},
+							{
+								"key": "name",
+								"type": "text",
+								"value": "test"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\" : 3,\r\n    \"status\":\"done\",\r\n    \"name\":\"test\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api-psql/test",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api-psql",
+								"test"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "query",
+								"type": "text",
+								"value": "name"
+							},
+							{
+								"key": "name",
+								"type": "text",
+								"value": "test"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\" : 1,\r\n    \"status\":\"done\",\r\n    \"name\":\"test\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api-psql/test/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api-psql",
+								"test",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create many",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[{\r\n        \"id\": 1,\r\n        \"name\": \"test\",\r\n        \"status\": \"done\"\r\n    },\r\n    {\r\n        \"id\": 2,\r\n        \"name\": \"test\",\r\n        \"status\": \"done\"\r\n    }\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api-psql/test",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api-psql",
+								"test"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		}
 	]
 }

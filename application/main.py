@@ -7,22 +7,23 @@ import uvicorn
 
 from routes.repository.repository_nosql import RepositoryNOSQL
 from routes.repository.repository_sql import RepositorySQL
-from routes.repository import api
+
 
 import dataset
 import os
 
 app = FastAPI()
 
-#api.init_app(app, "/api")
-database_postgres = dataset.connect(os.getenv("POSTGRESQL"))
-database_mongodb = mongoengine.connect(host=os.getenv("MONGODB_URL")).database
+env_psql = os.getenv("POSTGRESQL")
+env_nosql = os.getenv("MONGODB")
+database_postgres = dataset.connect(env_psql) #if env_psql else print("no database")
+database_mongodb = mongoengine.connect(host=env_nosql, maxPoolSize=50) if env_nosql else print("no database")
 endpoints = {
     "api_psql": "api-psql",
     "api_nosql": "api-nosql"
 }
 RepositorySQL(app, database_postgres, f"/{endpoints['api_psql']}")
-RepositoryNOSQL(app, database_mongodb, f"/{endpoints['api_nosql']}")
+RepositoryNOSQL(app, database_mongodb.database, f"/{endpoints['api_nosql']}")
 
 
 db = database_mongodb

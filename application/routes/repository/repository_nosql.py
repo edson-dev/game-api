@@ -29,31 +29,36 @@ class RepositoryNOSQL(RepositoryInterface):
         async def create(database_name: str, request: Request):
             table = repository[database_name]
             items = await request.json()
-            table.insert(items)
+            item = table.insert(items)
             return {
                 "success": True,
-                "data": table.find({})
+                "data": json.loads(json_util.dumps(table.find({"_id": ObjectId(item)})))
             }
 
-    def read(self, app, repository, access_point):
+    def read(self, app, repository: Database, access_point):
         @app.get(access_point + "/{database_name}", tags=[access_point])
-        async def read_all(database_name: str, request: Request, skip: Optional[int] = 0, limit: Optional[int] = 100):
+        async def read(database_name: str, request: Request, skip: Optional[int] = 0, limit: Optional[int] = 100):
             table = repository[database_name]
-            result = list(table.find(await self.query_header(request)))
+            query = await self.query_header(request)
+            result = list(table.find({}))
             return json.loads(json_util.dumps(result[skip:skip+limit]))
 
 
-        @app.get(access_point + "/{database_name}/{item_code}", tags=[access_point])
-        async def read_one(database_name: str, item_code: str):
-            table = repository[database_name]
-            result = list(table.find_one({"_id": ObjectId(item_code)}))
-            if len(result) == 1:
-                return json.dumps(result, default=str)
-            else:
-                raise HTTPException(status_code=404, detail="Item not found")
-
     def update(self, app, repository, access_point):
-        pass
+        @app.put(access_point + "/{database_name}", tags=[access_point])
+        async def upsert(database_name: str, request: Request):
+            table = repository[database_name]
+            keys = await self.params_list(request)
+            values = dict(await request.json())
+            try:
+                table.upsert(values, keys)
+                return list(table.all())
+            except Exception as e:
+                raise HTTPException(status_code=409, detail={
+                    "success": False,
+                    "error": str(e),
+                    "type": "Conflict"
+                })
 
     def delete(self, app, repository, access_point):
         pass

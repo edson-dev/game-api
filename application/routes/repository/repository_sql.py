@@ -3,7 +3,9 @@ from fastapi import HTTPException
 
 from interfaces.repository_interface import RepositoryInterface
 from fastapi import UploadFile, File, Request, Body
-
+from typing import Optional
+import json
+from bson import json_util
 
 class RepositorySQL(RepositoryInterface):
     def __init__(self, app, repository: Database, access_point="/repository"):
@@ -31,27 +33,35 @@ class RepositorySQL(RepositoryInterface):
 
     def read(self, app, repository, access_point):
         @app.get(access_point + "/{database_name}", tags=[access_point])
-        async def read_all(database_name: str, request: Request):
+        async def read(database_name: str, request: Request, skip: Optional[int] = 0, limit: Optional[int] = 100):
             table = repository[database_name]
             query = await self.query_header(request)
-            return list(table.find(**query))
-
-        @app.get(access_point + "/{database_name}/{item_code}", tags=[access_point])
-        async def read_one(database_name: str, item_code: int):
-            table = repository[database_name]
-            result = list(table.find(id=item_code))
-            return result
+            result = list(table.find(**query))
+            return json.loads(json_util.dumps(result[skip:skip+limit]))
 
     def update(self, app, repository, access_point):
         @app.put(access_point + "/{database_name}", tags=[access_point])
         async def upsert(database_name: str, request: Request):
             table = repository[database_name]
-            table.upsert(dict(await request.json()), ['id'])
-            return list(table.all())
+            keys = await self.params_list(request)
+            values = dict(await request.json())
+            try:
+                table.upsert(values, keys)
+                return list(table.all())
+            except Exception as e:
+                raise HTTPException(status_code=409, detail={
+                    "success": False,
+                    "error": str(e),
+                    "type": "Conflict"
+                })
 
     def delete(self, app, repository, access_point):
-        @app.delete(access_point + "/{database_name}/{item_code}", tags=[access_point])
-        async def delete(database_name: str, request: Request, item_code: int):
+        @app.delete(access_point + "/{database_name}", tags=[access_point])
+        async def delete(database_name: str, request: Request):
             table = repository[database_name]
-            table.delete(id=item_code)
+            query = await self.query_header(request)
+            if query:
+                if 'all' in query.keys():
+                    query = {}
+                table.delete(**query)
             return list(table.all())

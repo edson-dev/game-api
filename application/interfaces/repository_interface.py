@@ -3,13 +3,17 @@ from abc import ABC, abstractmethod
 
 class RepositoryInterface(ABC):
     async def query_header(self, request):
-        query = request.headers.get("query").split()
-        querable = {}
+        query = await self.params_list(request)
+        queryable = {}
         for i in query:
             value = request.headers.get(i)
             if value:
-                querable[i] = value
-        return querable
+                queryable[i] = value
+        return queryable
+
+    async def params_list(self, request):
+        return request.headers.get("query").split() \
+            if request.headers.get("query") is not None else []
 
     @abstractmethod
     def init_app(self):
