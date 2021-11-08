@@ -7,7 +7,7 @@ from distutils.util import strtobool
 from bson import ObjectId
 from fastapi import HTTPException, Query, Request
 from pymongo.database import Database
-
+from sqlalchemy import JSON
 
 from interfaces.repository_interface import RepositoryInterface
 
@@ -32,7 +32,7 @@ class RepositoryNOSQL(RepositoryInterface):
             item = table.insert(items)
             return {
                 "success": True,
-                "data": json.loads(json_util.dumps(table.find({"_id": ObjectId(item)})))
+                "data": json.loads(json.dumps(list(table.find({"_id": ObjectId(item)})), default=str))
             }
 
     def read(self, app, repository: Database, access_point):
@@ -41,7 +41,7 @@ class RepositoryNOSQL(RepositoryInterface):
             table = repository[database_name]
             query = await self.query_header(request)
             result = list(table.find({}))
-            return json.loads(json_util.dumps(result[skip:skip+limit]))
+            return json.loads(json.dumps(result[skip:skip+limit], default=str))
 
 
     def update(self, app, repository, access_point):
