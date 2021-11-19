@@ -3,11 +3,11 @@ from typing import Optional
 import json
 from bson import json_util, ObjectId
 
-from routes.interfaces.repository import Repository
+from routes.interfaces.crud import CRUD
 
 
-class SQL(Repository):
-    def __init__(self, app: FastAPI, repository, access_point="/repository", dependencies=None):
+class SQL(CRUD):
+    def __init__(self, app: FastAPI, repository, access_point="/crud", dependencies=None):
         self.router = APIRouter()
         self.repository = repository
         self.init_app(self.router)

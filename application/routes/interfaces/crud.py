@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 from bson import ObjectId
 
 
-class Repository(ABC):
+class CRUD(ABC):
     async def query_header(self, request, search):
         query = await self.params_list(request)
         queryable = {}
