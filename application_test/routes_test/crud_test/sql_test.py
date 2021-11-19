@@ -3,7 +3,7 @@ from base_test import *
 @pytest.mark.anyio
 async def test_create():
     async with AsyncClient(app=app, base_url="http://localhost") as ac:
-        response = await ac.post("api-sql/test",
+        response = await ac.post("crud-sql/test",
                                      json={"name": "test",
                                            "status": "created"})
     assert response.status_code == 200
@@ -12,7 +12,7 @@ async def test_create():
 @pytest.mark.anyio
 async def test_read():
     async with AsyncClient(app=app, base_url="http://localhost") as ac:
-        response = await ac.get('api-sql/test',
+        response = await ac.get('crud-sql/test',
                                 headers={"query": "name",
                                          "name": "test"})
     assert response.status_code == 200
@@ -20,7 +20,7 @@ async def test_read():
 @pytest.mark.anyio
 async def test_update():
     async with AsyncClient(app=app, base_url="http://localhost") as ac:
-        response = await ac.put("api-sql/test",
+        response = await ac.put("crud-sql/test",
                     headers={"query": "name", "name": "test"},
                     json={
                         "status": "update",
@@ -31,7 +31,7 @@ async def test_update():
 @pytest.mark.anyio
 async def test_delete():
     async with AsyncClient(app=app, base_url="http://localhost") as ac:
-        response = await ac.delete('api-sql/test',
+        response = await ac.delete('crud-sql/test',
                                    headers={"query": "name", "name": "test"}
                                    )
     assert response.status_code == 200

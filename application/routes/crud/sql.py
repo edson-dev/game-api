@@ -22,12 +22,12 @@ class SQL(Repository):
             table = self.repository[table_name]
             items = await request.json()
             if isinstance(items, list):
-                table.insert_many([ob for ob in list(items)])
+                result = table.insert_many([ob for ob in list(items)])
             else:
-                table.insert(items)
+                result = table.insert(items)
             return {
                 "success": True,
-                "data": list(table.all())
+                "id": result
             }
 
         @router.get("/{table_name}")
