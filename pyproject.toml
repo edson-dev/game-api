@@ -17,6 +17,8 @@ python_dotenv = "*"
 pymongo = "*"
 httpx = "*"
 mongoengine = "*"
+asyncpg = "*"
+databases = "*"
 
 [tool.poetry.dev-dependencies]
 

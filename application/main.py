@@ -2,11 +2,12 @@
 import mongoengine as mongoengine
 import pymongo as pymongo
 from mongoengine import connect
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 import uvicorn
 
-from routes.repository.repository_nosql import RepositoryNOSQL
-from routes.repository.repository_sql import RepositorySQL
+from routes.repository.sql import SQL
+from routes.repository.nosql import NoSQL
+from dependencies import query_token, header_token
 
 
 import dataset
@@ -18,12 +19,10 @@ env_psql = os.getenv("POSTGRESQL")
 env_nosql = os.getenv("MONGODB")
 database_postgres = dataset.connect(env_psql) #if env_psql else print("no database")
 database_mongodb = mongoengine.connect(host=env_nosql, maxPoolSize=50) if env_nosql else print("no database")
-endpoints = {
-    "api_psql": "api-psql",
-    "api_nosql": "api-nosql"
-}
-RepositorySQL(app, database_postgres, f"/{endpoints['api_psql']}")
-RepositoryNOSQL(app, database_mongodb.database, f"/{endpoints['api_nosql']}")
+#RepositorySQL(app, database_postgres, 'api-sql')
+SQL(app, database_postgres, '/api-sql')
+NoSQL(app, database_mongodb.database, '/api-nosql')
+#RepositoryNOSQL(app, database_mongodb.database, 'api-nosql')
 
 
 db = database_mongodb
