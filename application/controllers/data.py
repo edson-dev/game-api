@@ -2,7 +2,7 @@ import json
 from typing import Dict
 
 from starlette.responses import JSONResponse
-
+import logging
 
 class ResponseError(Exception):
     def __init__(self, status_code=500, fields: Dict = {}):
@@ -11,11 +11,12 @@ class ResponseError(Exception):
             setattr(self, key, fields[key])
 
     def __repr__(self):
-        return self.__dict__
+        logging.error(self.__dict__)
+        return JSONResponse(status_code=self.status_code, content=self.__repr__())
 
 def response(data, skip=0, limit=100):
     if isinstance(data, ResponseError):
-        return JSONResponse(status_code=data.status_code, content=data.__repr__())
+        return data
     else:
         payload = {
             'status': "success",

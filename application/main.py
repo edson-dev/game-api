@@ -5,6 +5,7 @@ import uvicorn
 
 from routes.crud.sql import SQL
 from routes.crud.nosql import NoSQL
+from routes.currency import Currency
 from dependencies import query_token, header_token
 
 
@@ -20,6 +21,7 @@ database_mongodb = mongoengine.connect(host=env_nosql, maxPoolSize=50) if env_no
 #RepositorySQL(app, database_postgres, 'crud-sql')
 SQL(app, database_postgres, '/crud-sql')
 NoSQL(app, database_mongodb.database, '/crud-nosql')
+Currency(app, database_postgres, '/currency')
 #RepositoryNOSQL(app, database_mongodb.database, 'crud-nosql')
 
 

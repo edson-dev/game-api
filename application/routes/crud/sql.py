@@ -1,7 +1,8 @@
-from fastapi import UploadFile, File, Request, Body, APIRouter, FastAPI, HTTPException
+from fastapi import UploadFile, File, Request, Body, APIRouter, FastAPI, Response
 from typing import Optional, Dict, List
 import json
 from bson import json_util, ObjectId
+
 
 from controllers.data import *
 from routes.interfaces.crud import CRUD
@@ -19,7 +20,7 @@ class SQL(CRUD):
 
     def init_app(self, router):
         @router.post("/{table_name}")
-        async def create(table_name: str, item: List[Dict[str, str]], request: Request):
+        async def create(table_name: str, item: List[Dict[str, str]], request: Request, resp: Response):
             table = self.repository[table_name]
             items = await request.json()
             try:
@@ -31,6 +32,7 @@ class SQL(CRUD):
                     result = table.insert(items)
                 return response(result)
             except Exception as e:
+                resp.status_code = 409
                 return response(ResponseError(status_code=409, fields={
                     "status": "fail",
                     "error": str(e),
