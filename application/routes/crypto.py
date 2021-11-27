@@ -3,8 +3,8 @@ from typing import Optional
 from fastapi import APIRouter, FastAPI
 import requests
 
-class Currency():
-    def __init__(self, app: FastAPI, repository, access_point="/currency", dependencies=None):
+class Crypto():
+    def __init__(self, app: FastAPI, repository, access_point="/crypto", dependencies=None):
         self.router = APIRouter()
         self.repository = repository
         self.init_app(self.router)
@@ -15,9 +15,15 @@ class Currency():
 
     def init_app(self, router):
         @router.post("/")
-        async def get_all(currency_name: Optional[str] = "BRL", amount: Optional[int] =1):
-            url = f'https://api.exchangerate.host/latest?base={currency_name}'
+        async def get_all(currency_name: Optional[str] = "btc"):
+            url = f'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=1000000'
             response = requests.get(url)
             data = response.json()
-            data.pop("motd")
+            return data
+
+        @router.post("/plataforms")
+        async def get_platforms():
+            url = f'https://api.coingecko.com/api/v3/finance_platforms'
+            response = requests.get(url)
+            data = response.json()
             return data
