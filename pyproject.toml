@@ -9,7 +9,7 @@ python = "^3.8"
 fastapi = "^0.68.1"
 uvicorn = "*"
 replit = "^3.2.4"
-sqlachemy = "^1.4"
+SQLAlchemy = "^1.4"
 dataset = "*"
 psycopg2-binary = "*"
 aiosqlite ="*"
@@ -19,6 +19,7 @@ httpx = "*"
 mongoengine = "*"
 asyncpg = "*"
 databases = "*"
+dnspython = "*"
 
 [tool.poetry.dev-dependencies]
 

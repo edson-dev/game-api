@@ -35,8 +35,8 @@ async def shutdown():
 
 @app.get("/test", tags=["/test"])
 def read_root():
-    return {"response": "Hello World"}
+    return {"response": "Hello Worlds"}
 
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", host="0.0.0.0", port=8080, lifespan='on')
+    uvicorn.run("main:app", host="0.0.0.0", port=8080, lifespan='on', reload=True)

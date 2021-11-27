@@ -1,8 +1,9 @@
 from fastapi import UploadFile, File, Request, Body, APIRouter, FastAPI, HTTPException
-from typing import Optional
+from typing import Optional, Dict, List
 import json
 from bson import json_util, ObjectId
 
+from controllers.data import *
 from routes.interfaces.crud import CRUD
 
 
@@ -18,24 +19,30 @@ class SQL(CRUD):
 
     def init_app(self, router):
         @router.post("/{table_name}")
-        async def create(table_name: str, request: Request):
+        async def create(table_name: str, item: List[Dict[str, str]], request: Request):
             table = self.repository[table_name]
             items = await request.json()
-            if isinstance(items, list):
-                result = table.insert_many([ob for ob in list(items)])
-            else:
-                result = table.insert(items)
-            return {
-                "success": True,
-                "id": result
-            }
+            try:
+                if isinstance(items, list):
+                    result = []
+                    for ob in list(items):
+                        result.append(table.insert(ob))
+                else:
+                    result = table.insert(items)
+                return response(result)
+            except Exception as e:
+                return response(ResponseError(status_code=409, fields={
+                    "status": "fail",
+                    "error": str(e),
+                    "type": "Conflict"
+                }))
 
         @router.get("/{table_name}")
         async def read(request: Request, table_name: Optional[str] = "test", id: Optional[int] = None, skip: Optional[int] = 0, limit: Optional[int] = 100):
             table = self.repository[table_name]
             query = await self.query_header(request, {"id": id} if id is not None else {})
             result = list(table.find(**query))
-            return json.loads(json_util.dumps(result[skip:skip + limit]))
+            return response(result, skip, limit)
 
         @router.put("/{table_name}")
         async def upsert(table_name: str, request: Request):
@@ -44,13 +51,13 @@ class SQL(CRUD):
             values = dict(await request.json())
             try:
                 table.upsert(values, keys)
-                return list(table.all())
+                return response(list(table.all()))
             except Exception as e:
-                raise HTTPException(status_code=409, detail={
-                    "success": False,
+                response(ResponseError(status_code=409, fields={
+                    "status": "fail",
                     "error": str(e),
                     "type": "Conflict"
-                })
+                }))
 
         @router.delete("/{table_name}")
         async def delete(table_name: str, request: Request):
@@ -60,4 +67,4 @@ class SQL(CRUD):
                 if 'all' in query.keys():
                     query = {}
                 table.delete(**query)
-            return list(table.all())
+            return response(list(table.all()))
