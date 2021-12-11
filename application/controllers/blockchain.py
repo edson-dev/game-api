@@ -24,11 +24,11 @@ class BlockChain:
         encoded_block = json.dumps(block, sort_keys=True).encode()
         return hashlib.sha256(encoded_block).hexdigest()
 
-    def mine(self, block) -> int:
+    def mine(self, data) -> int:
         new_block = None
         while  not self._validate_proof(new_block):
             proof = new_block["proof"]+1 if new_block else 0
-            new_block = self._create_block(block["data"], proof, self._hash(self.get_previous_block()))
+            new_block = self._create_block(data, proof, self._hash(self.get_previous_block()))
         return new_block
 
     def _validate_proof(self, block: dict, difficult: int = 3) -> bool:
@@ -43,10 +43,10 @@ class BlockChain:
                 return False
         return True
 
-a = BlockChain()
-block = a._create_block({})
-new_block = a.mine(block)
-a.chain.append(new_block)
-print(a.chain)
-print("last_hash:",a._hash(a.get_previous_block()))
-print("valid:", a.is_chain_valid())
+if __name__ == "__main__":
+    a = BlockChain()
+    new_block = a.mine({})
+    a.chain.append(new_block)
+    print(a.chain)
+    print("last_hash:", a._hash(a.get_previous_block()))
+    print("valid:", a.is_chain_valid())

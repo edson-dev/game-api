@@ -7,6 +7,7 @@ from routes.crud.sql import SQL
 from routes.crud.nosql import NoSQL
 from routes.currency import router as router_currency
 from routes.crypto import router as router_crypto
+from routes.blockchain import router as router_blockchain
 
 from dependencies import query_token, header_token
 
@@ -27,6 +28,7 @@ NoSQL(app, database_mongodb.database, 'crud-nosql')
 
 app.include_router(router_currency, prefix='/currency', tags=['currency'])
 app.include_router(router_crypto, prefix='/crypto', tags=['crypto'])
+app.include_router(router_blockchain, prefix='/blockchain', tags=['blockchain'])
 
 @app.on_event("startup")
 async def startup():
