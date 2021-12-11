@@ -5,8 +5,9 @@ import uvicorn
 
 from routes.crud.sql import SQL
 from routes.crud.nosql import NoSQL
-from routes.currency import Currency
-from routes.crypto import Crypto
+from routes.currency import router as router_currency
+from routes.crypto import router as router_crypto
+
 from dependencies import query_token, header_token
 
 
@@ -20,12 +21,12 @@ env_nosql = os.getenv("MONGODB")
 database_postgres = dataset.connect(env_psql) #if env_psql else print("no database")
 database_mongodb = mongoengine.connect(host=env_nosql, maxPoolSize=50) if env_nosql else print("no database")
 #RepositorySQL(app, database_postgres, 'crud-sql')
-SQL(app, database_postgres, '/crud-sql')
-NoSQL(app, database_mongodb.database, '/crud-nosql')
-Currency(app, database_postgres, '/currency')
-Crypto(app, database_postgres, '/crypto')
+SQL(app, database_postgres, 'crud-sql')
+NoSQL(app, database_mongodb.database, 'crud-nosql')
 #RepositoryNOSQL(app, database_mongodb.database, 'crud-nosql')
 
+app.include_router(router_currency, prefix='/currency', tags=['currency'])
+app.include_router(router_crypto, prefix='/crypto', tags=['crypto'])
 
 @app.on_event("startup")
 async def startup():

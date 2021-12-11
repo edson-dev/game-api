@@ -2,16 +2,16 @@ from fastapi import UploadFile, File, Request, Body, APIRouter, FastAPI, HTTPExc
 from typing import Optional, Dict
 import json
 from bson import json_util, ObjectId
-from pymongo import database,collection
+from pymongo import database, collection
 from routes.interfaces.crud import CRUD
 
 
 class NoSQL(CRUD):
-    def __init__(self, app: FastAPI, repository: collection.Collection, access_point="/crud", dependencies=None):
+    def __init__(self, app: FastAPI, repository: collection.Collection, access_point="crud", dependencies=None):
         self.router = APIRouter()
         self.repository = repository
         self.init_app(self.router)
-        app.include_router(prefix=access_point,
+        app.include_router(prefix=f"/{access_point}",
                            router=self.router,
                            tags=[access_point],
                            dependencies=dependencies)

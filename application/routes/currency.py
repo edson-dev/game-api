@@ -1,23 +1,15 @@
 from typing import Optional
 
-from fastapi import APIRouter, FastAPI
+from fastapi import APIRouter
 import requests
 
-class Currency():
-    def __init__(self, app: FastAPI, repository, access_point="/currency", dependencies=None):
-        self.router = APIRouter()
-        self.repository = repository
-        self.init_app(self.router)
-        app.include_router(prefix=access_point,
-                           router=self.router,
-                           tags=[access_point],
-                           dependencies=dependencies)
+router = APIRouter()
 
-    def init_app(self, router):
-        @router.post("/")
-        async def get_all(currency_name: Optional[str] = "BRL", amount: Optional[int] =1):
-            url = f'https://api.exchangerate.host/latest?base={currency_name}'
-            response = requests.get(url)
-            data = response.json()
-            data.pop("motd")
-            return data
+
+@router.post("/")
+async def get_all(currency_name: Optional[str] = "BRL", amount: Optional[int] = 1):
+    url = f'https://api.exchangerate.host/latest?base={currency_name}&amount={amount}'
+    response = requests.get(url)
+    data = response.json()
+    data.pop("motd")
+    return data

@@ -4,6 +4,7 @@ from typing import Dict
 from starlette.responses import JSONResponse
 import logging
 
+
 class ResponseError(Exception):
     def __init__(self, status_code=500, fields: Dict = {}):
         self.status_code = status_code
@@ -13,6 +14,7 @@ class ResponseError(Exception):
     def __repr__(self):
         logging.error(self.__dict__)
         return JSONResponse(status_code=self.status_code, content=self.__repr__())
+
 
 def response(data, skip=0, limit=100):
     if isinstance(data, ResponseError):

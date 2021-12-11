@@ -9,11 +9,11 @@ from routes.interfaces.crud import CRUD
 
 
 class SQL(CRUD):
-    def __init__(self, app: FastAPI, repository, access_point="/crud", dependencies=None):
+    def __init__(self, app: FastAPI, repository, access_point="crud", dependencies=None):
         self.router = APIRouter()
         self.repository = repository
         self.init_app(self.router)
-        app.include_router(prefix=access_point,
+        app.include_router(prefix=f"/{access_point}",
                            router=self.router,
                            tags=[access_point],
                            dependencies=dependencies)
