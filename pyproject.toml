@@ -20,6 +20,7 @@ mongoengine = "*"
 asyncpg = "*"
 databases = "*"
 dnspython = "*"
+discord = "*"
 
 [tool.poetry.dev-dependencies]
 
