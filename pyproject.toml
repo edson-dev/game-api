@@ -22,6 +22,7 @@ databases = "*"
 dnspython = "*"
 discord = "*"
 aiofiles = "*"
+pynacl = "*"
 
 [tool.poetry.dev-dependencies]
 

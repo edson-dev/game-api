@@ -1,6 +1,12 @@
 import os
+import time
 
 import discord
+from discord import Message, VoiceChannel
+
+from routes.audio import create_audio
+
+
 class Bot:
     def __new__(cls):
         client = discord.Client()
@@ -9,14 +15,25 @@ class Bot:
             print("{0.user} is now online!".format(client))
 
         @client.event
-        async def on_message(message):
+        async def on_message(message: Message):
             if message.author == client.user:
                 return
-            if message.content.startswith('>'):
-                await message.channel.send('Cuzão')
-            if message.content.startswith('>lol'):
-                await message.channel.send('Noob')
+
+            elif message.content.startswith('>'):
+                return await message.channel.send('Cuzão')
+            elif message.content.startswith('time'):
+                return await message.channel.send('Cuzão',file=discord.File("temp.mp3"))
+            if message.content.startswith('!'):
+                channel: VoiceChannel = message.author.voice.channel
+                voice = await channel.connect()
+                await create_audio(message.content[1:],"temp.mp3")
+                l = len(message.content)
+                voice.play(discord.FFmpegPCMAudio(executable="C:/Users/AzK-v/Documents/dev/ffmpeg/ffmpeg.exe",source='temp.mp3'))
+                time.sleep(int(l*0.3)+1)
+                voice_client = message.guild.voice_client
+                await voice_client.disconnect()
         return client
+
     def __enter__(self):
         print("Enter")
 
