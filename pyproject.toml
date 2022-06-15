@@ -21,6 +21,7 @@ asyncpg = "*"
 databases = "*"
 dnspython = "*"
 discord = "*"
+aiofiles = "*"
 
 [tool.poetry.dev-dependencies]
 

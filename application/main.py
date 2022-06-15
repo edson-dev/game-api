@@ -23,7 +23,7 @@ import dataset
 import os
 
 app = FastAPI()
-app.mount("/static", StaticFiles(directory="./static"), name="static")
+app.mount("/static", StaticFiles(directory="application/static"), name="static")
 
 env_psql = os.getenv("POSTGRESQL")
 #env_nosql = os.getenv("MONGODB")
