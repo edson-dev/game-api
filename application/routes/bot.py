@@ -27,7 +27,7 @@ class Bot:
                 voice = await channel.connect()
                 await create_audio_async(message.content[1:], "temp.mp3")
                 l = len(message.content)
-                voice.play(discord.FFmpegPCMAudio(executable="C:/Users/AzK-v/Documents/dev/ffmpeg/ffmpeg.exe",source='temp.mp3'))
+                voice.play(discord.FFmpegPCMAudio(executable=os.getenv("FFMPEG"),source='temp.mp3'))
                 time.sleep(int(l*0.3)+1)
                 await message.delete()
                 voice_client = message.guild.voice_client
