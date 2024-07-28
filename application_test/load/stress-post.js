@@ -8,8 +8,10 @@ export const options = {
     vus: 1,
     duration: '10s'
 };
-
+const data = JSON.stringify(JSON.parse(open('./data.json')));
 export default function () {
-    const response = http.get("http://localhost:8080/lake/lake/client");
-    sleep(1);
+    console.log(data)
+    const response = http.post("http://localhost:8080/lake/lake/client",data,{
+    headers: { 'Content-Type': 'application/json' },
+  });
 }

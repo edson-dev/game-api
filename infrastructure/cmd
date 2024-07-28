@@ -1,0 +1,11 @@
+fly launch --memory 512 --cpus 1 --region gru
+
+fly deploy --memory 512 --cpus 1 --region gru
+
+docker build -t edsonxp/game-api .
+docker run -p 80:80 --cpus="1.0" --memory="512m" edsonxp/game-api
+docker push edsonxp/game-api
+
+fly machine run edsonxp/game-api:latest --app lake --memory 512 --cpus 1 --region gru --port 80:80
+fly ips allocate-v4 --shared -a lake
+fly ips allocate-v6 -a lake

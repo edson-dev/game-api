@@ -6,7 +6,7 @@ from fastapi.templating import Jinja2Templates
 
 
 router = APIRouter()
-template = Jinja2Templates(directory="./application/templates")
+template = Jinja2Templates(directory="./templates")
 template.env.block_start_string = "[%"
 template.env.block_end_string = "%]"
 template.env.variable_start_string = "[["

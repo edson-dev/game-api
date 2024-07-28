@@ -1,0 +1,6 @@
+[
+  {
+    "id": "nextval('serial')",
+    "name": "'Test'"
+  }
+]

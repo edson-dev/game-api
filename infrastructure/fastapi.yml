@@ -10,7 +10,11 @@ services:
         #      target: /application
         #      read_only: true
         ports:
-            - 8080:8080
-
+            - 8080:80
+        deploy:
+            resources:
+                limits:
+                    cpus: '1'
+                    memory: 512M
 
 #docker-compose -f fastapi.yml up

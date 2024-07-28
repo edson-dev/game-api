@@ -1,7 +1,12 @@
 from abc import ABC, abstractmethod
 
-from bson import ObjectId
-
+"""
+/get (get a list of items)
+/get/{id} (get a single items)
+/post (post/add a new items in the set of items) -> idempotent
+/post^patch^put/{id} (replace an items)
+/delete/{id} (delete an items)
+"""
 
 class CRUD(ABC):
     async def query_header(self, request, search):
